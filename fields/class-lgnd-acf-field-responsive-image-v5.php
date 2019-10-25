@@ -248,7 +248,6 @@ class lgnd_acf_field_responsive_image extends acf_field {
 			// url exists
 			if( $url ) $url = $url[0];
 
-
 			// url exists
 			if( $url ) {
 				$div['class'] .= ' has-value';
@@ -583,34 +582,13 @@ class lgnd_acf_field_responsive_image extends acf_field {
 	*  @return	$value
 	*/
 
+	/*
+
 	function load_value( $value, $post_id, $field ) {
 
-		if (!is_numeric($value)) return $value;
-
-		$metadata = wp_get_attachment_metadata($value);
-		$data = [
-			'attachment_id' => $value,
-			'srcset' => []
-		];
-		$base = wp_get_upload_dir()['baseurl'] . '/' . str_replace(basename($metadata['file']), '', $metadata['file']);
-		foreach ($metadata['sizes'] as $size => $details) {
-			if (stristr($size, $field['key']) !== false) {
-				$data['srcset'][] = $base . $details['file'] . ' ' . str_replace($field['key'].'-', '', $size);
-			}
-		}
-		$data['srcset'] = implode(', ', $data['srcset']);
-		$data['src'] = wp_get_upload_dir()['baseurl'] . '/' . $metadata['file'];
-
-		if ($field['return_format'] == 'array') {
-			return $data;
-		} else {
-			return sprintf('<img src="%s" srcset="%s">', $data['src'], $data['srcset']);
-		}
-
-		// return
-		return $data;
-
 	}
+
+	*/
 
 
 	/*
@@ -664,7 +642,30 @@ class lgnd_acf_field_responsive_image extends acf_field {
 
 		}
 
-		return $value;
+		if (!is_numeric($value)) return $value;
+
+		$metadata = wp_get_attachment_metadata($value);
+		$data = [
+			'attachment_id' => $value,
+			'srcset' => []
+		];
+		$base = wp_get_upload_dir()['baseurl'] . '/' . str_replace(basename($metadata['file']), '', $metadata['file']);
+		foreach ($metadata['sizes'] as $size => $details) {
+			if (stristr($size, $field['key']) !== false) {
+				$data['srcset'][] = $base . $details['file'] . ' ' . str_replace($field['key'].'-', '', $size);
+			}
+		}
+		$data['srcset'] = implode(', ', $data['srcset']);
+		$data['src'] = wp_get_upload_dir()['baseurl'] . '/' . $metadata['file'];
+
+		if ($field['return_format'] == 'array') {
+			return $data;
+		} else {
+			return sprintf('<img src="%s" srcset="%s">', $data['src'], $data['srcset']);
+		}
+
+		// return
+		return $data;
 	}
 
 
